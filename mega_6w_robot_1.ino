@@ -42,6 +42,9 @@
 // UART1 для Bluetooth
 #define BT Serial1
 
+// Реле управления фарами
+#define FORWARD_LAMPS 13
+
 // Переменные для управления роботом
 char command = 'S';
 char prevCommand = 'A';
@@ -87,6 +90,10 @@ void setup()
   // Инициализация выходов для управления моторами
   pinMode(DIRA, OUTPUT);
   pinMode(DIRB, OUTPUT);
+
+  // Инициализация выхода для управления фарами
+  digitalWrite(FORWARD_LAMPS, false);
+  pinMode(FORWARD_LAMPS, OUTPUT);
 }
 
 void loop()
@@ -145,11 +152,11 @@ void loop()
             motorA_setpower(-velocity - LLLL, false);
             motorB_setpower(-velocity, false);
             break;
-          case 'L':
+          case 'R':
             motorA_setpower(-velocity - LLLL, false);
             motorB_setpower(velocity, false);
             break;
-          case 'R':
+          case 'L':
             motorA_setpower(velocity + LLLL, false);
             motorB_setpower(-velocity, false);
             break;
@@ -157,26 +164,28 @@ void loop()
             motorA_setpower(-1, false);
             motorB_setpower(-1, false);
             break;
-          case 'I':  //FR
+          case 'G':  //FR
             //yellowCar.ForwardRight_4W(velocity);
             motorA_setpower(velocity + LLLL, false);
             motorB_setpower(velocity / 2, false);
             break;
-          case 'J':  //BR
+          case 'H':  //BR
             motorA_setpower(-velocity - LLLL, false);
             motorB_setpower(-velocity / 2, false);
             break;
-          case 'G':  //FL
+          case 'I':  //FL
             motorA_setpower((velocity  + LLLL) / 2, false);
             motorB_setpower(velocity, false);
             break;
-          case 'H':  //BL
+          case 'J':  //BL
             motorA_setpower((-velocity - LLLL) / 2, false);
             motorB_setpower(-velocity, false);
             break;
           case 'W':
+            digitalWrite(FORWARD_LAMPS, true);
             break;
           case 'w':
+            digitalWrite(FORWARD_LAMPS, false);
             break;
           case 'U':
             break;
